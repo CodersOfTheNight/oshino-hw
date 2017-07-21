@@ -33,7 +33,7 @@ def swap_info():
         yield "swap.{0}".format(k), v
 
 
-def disk_info():
+def disk_info(paths):
     # Disk usage
     for path in paths:
         for k, v in psutil.disk_usage(path):
@@ -48,9 +48,15 @@ def disk_info():
 
 def net_info():
     # Net IO
-    for iface, info in psutil.net_io_counters().items():
-        for k, v in iterate_fields(info):
-            key = "net.{0}.{1}".format(iface, k)
+    net_info = psutil.net_io_counters()
+    if isinstance(net_info, dict):
+        for iface, info in net_info:
+            for k, v in iterate_fields(info):
+                key = "net.{0}.{1}".format(iface, k)
+                yield key, v
+    else:
+        for k, v in iterate_fields(net_info):
+            key = "net.{0}.{1}".format("eth0", k)
             yield key, v
 
 
@@ -71,7 +77,7 @@ class HWAgent(Agent):
         data.extend(cpu_info())
         data.extend(ram_info())
         data.extend(swap_info())
-        data.extend(disk_info())
+        data.extend(disk_info(self.paths))
         data.extend(net_info())
 
         for name, metric in data:
