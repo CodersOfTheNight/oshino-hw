@@ -1,5 +1,5 @@
 from oshino import Agent
 
 
-class StubAgent(Agent):
+class HWAgent(Agent):
     pass
