@@ -7,21 +7,24 @@ from oshino_hw.agent import HWAgent
 
 @fixture
 def agent_cfg():
-    return AgentConfig({"name": "HWAgentTest", "tag": "test"})
+    return {"name": "HWAgentTest", "tag": "test"}
 
 
 class StubClient(object):
-    data = {}
+    data = []
 
     def event(self, **kwargs):
-        self.data = kwargs
+        self.data.append(kwargs)
 
 
 class TestAgent(object):
 
     @mark.asyncio
     async def test_simple_tick(self, agent_cfg, event_loop):
-        agents = [(HWAgent(agent_cfg), agent_cfg)]
+        agents = [(HWAgent(agent_cfg), AgentConfig(agent_cfg))]
         stub_client = StubClient()
         await step(stub_client, agents, event_loop)
-        assert len(stub_client.data.items()) > 0
+        assert len(stub_client.data) > 0
+        print(stub_client.data)
+
+        assert stub_client.data is None
