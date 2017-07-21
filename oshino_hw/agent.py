@@ -1,3 +1,5 @@
+import os
+
 import psutil
 
 from oshino import Agent
@@ -60,6 +62,13 @@ def net_info():
             yield key, v
 
 
+def load_info():
+    (shortterm, midterm, longterm) = os.getloadavg()
+    yield "load.shortterm", shortterm
+    yield "load.midterm", midterm
+    yield "load.longterm", longterm
+
+
 class HWAgent(Agent):
 
     @property
@@ -79,6 +88,7 @@ class HWAgent(Agent):
         data.extend(swap_info())
         data.extend(disk_info(self.paths))
         data.extend(net_info())
+        data.extend(load_info())
 
         for name, metric in data:
             service_name = self.prefix + name
