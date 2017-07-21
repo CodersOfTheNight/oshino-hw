@@ -38,7 +38,7 @@ def swap_info():
 def disk_info(paths):
     # Disk usage
     for path in paths:
-        for k, v in psutil.disk_usage(path):
+        for k, v in iterate_fields(psutil.disk_usage(path)):
             key = "disk.usage.{0}.{1}".format(path, k)
             yield key, v
 
