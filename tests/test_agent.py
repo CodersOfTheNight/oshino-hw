@@ -25,6 +25,3 @@ class TestAgent(object):
         stub_client = StubClient()
         await step(stub_client, agents, event_loop)
         assert len(stub_client.data) > 0
-        print(stub_client.data)
-
-        assert stub_client.data is None
