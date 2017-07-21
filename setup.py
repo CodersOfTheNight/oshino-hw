@@ -19,6 +19,6 @@ setup(name="oshino-hw",
       packages=["oshino_hw"],
       install_requires=[str(ir.req) for ir in install_reqs],
       test_suite="pytest",
-      tests_require=["pytest", "pytest-cov"],
+      tests_require=["pytest", "pytest-cov", "pytest-asyncio"],
       setup_requires=["pytest-runner"]
       )
