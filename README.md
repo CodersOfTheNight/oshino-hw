@@ -8,6 +8,20 @@ Config
 ======
 - `paths` - a list of pathes to measure disk usage. Eg. `/` would be used in unix to find free space on root. `C:\` can be useful when using Windows
 
-!!! BE AWARE !!!
-=================
-Very early developer-testing version, don't use it just yet
+Example config
+--------------
+```yaml
+---
+interval: 10
+loglevel: DEBUG
+riemann:
+  host: localhost
+  port: 5555
+agents:
+  - name: hw
+    module: oshino_hw.agent.HWAgent
+    tag: hw
+    paths:
+      - /
+      - /mnt/external-data/
+```
